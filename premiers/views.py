@@ -1,3 +1,5 @@
+from django.db.models import Case, When
+from django.utils import timezone
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -23,8 +25,13 @@ class PremierViewSet(mixins.ListModelMixin,
     """
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = PremierSerializer
-    queryset = Premier.objects.filter(is_active=True)
     pagination_class = ResultSetPagination
+
+    def get_queryset(self):
+        today = timezone.now()
+        return Premier.objects.filter(is_active=True).annotate(
+            is_future=Case(When(premier_at__gt=today, then=True), default=False)
+        )
 
     def perform_create(self, serializer):
         """Overriding perform_create method is an elegant solution on

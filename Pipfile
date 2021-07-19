@@ -17,6 +17,7 @@ argon2-cffi = "*"
 psycopg2-binary = "*"
 redis = "*"
 pillow = "*"
+dateutils = "*"
 
 [dev-packages]
 coverage = "*"
