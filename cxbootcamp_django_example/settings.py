@@ -272,6 +272,13 @@ SWAGGER_SETTINGS = {
 CORS_ORIGIN_ALLOW_ALL = env.bool('CORS_ALLOW_ALL', False)
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGINS', [])
 
+# CELERY
+CELERY_BROKER_URL = env.str('BROKER_URL')
+CELERY_TASK_DEFAULT_QUEUE = "django"
+
+CELERY_TASK_SOFT_TIME_LIMIT = env.int('CELERY_TASK_SOFT_TIME_LIMIT_SEC', 40)
+CELERY_WORKER_SEND_TASK_EVENTS = True
+
 # Django Email settings
 # https://docs.djangoproject.com/en/3.2/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
