@@ -79,7 +79,7 @@ class Comment(models.Model):
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    votes = GenericRelation('Vote', related_query_name='comments')
+    votes = GenericRelation(Vote, related_query_name='comments')
 
     class Meta:
         db_table = 'premier_comments'
