@@ -22,6 +22,17 @@ services:
     depends_on:
       - redis
       - api
+  celery_beat:
+    build: .
+    command: celery -A cxbootcamp_django_example beat -l info -Q django
+    env_file:
+      - .env
+    entrypoint: ""
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - api
   postgres:
     image: postgres:12.3
     restart: always

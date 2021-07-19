@@ -14,6 +14,7 @@ import os
 
 import environs
 
+from celery.schedules import crontab
 from pathlib import Path
 
 env = environs.Env()
@@ -278,6 +279,13 @@ CELERY_TASK_DEFAULT_QUEUE = "django"
 
 CELERY_TASK_SOFT_TIME_LIMIT = env.int('CELERY_TASK_SOFT_TIME_LIMIT_SEC', 40)
 CELERY_WORKER_SEND_TASK_EVENTS = True
+
+CELERY_BEAT_SCHEDULE = {
+    'run-tick-tack': {
+        'task': 'premiers.tasks.tick_tack',
+        'schedule': crontab(minute='*')
+    },
+}
 
 # Django Email settings
 # https://docs.djangoproject.com/en/3.2/topics/email/
