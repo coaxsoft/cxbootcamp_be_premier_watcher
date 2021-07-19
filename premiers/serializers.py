@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Sum
 from rest_framework import serializers
 
 from authentication.models import User
@@ -14,8 +16,24 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PremierSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Premier
-        fields = ('id', 'url', 'name', 'description', 'user', 'premier_at', 'created_at')
+        fields = ('id', 'url', 'name', 'description', 'user', 'rating', 'premier_at', 'created_at')
         read_only_fields = ('id', 'url', 'user', 'created_at')
+
+    def get_rating(self, obj: models.Premier) -> float:
+        """This is how aggregation works. In this example
+        we need to calculate and return the total sum of votes of
+        the premier.
+
+        Obviously, we do it using DB aggregation.
+        """
+        obj_type = ContentType.objects.get_for_model(obj)
+        rating = models.Vote.objects.filter(
+            content_type=obj_type,
+            object_id=obj.id
+        ).aggregate(sum=Sum('rating'))['sum']
+
+        return rating
