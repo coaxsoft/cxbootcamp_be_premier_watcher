@@ -88,4 +88,3 @@ class TestSubquery(BaseAPITest):
 
         p: Premier = qs.first()
         self.assertEqual(p.top_comment_id, self.comment_top.id)
-
