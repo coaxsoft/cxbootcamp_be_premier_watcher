@@ -280,6 +280,7 @@ CELERY_TASK_DEFAULT_QUEUE = "django"
 CELERY_TASK_SOFT_TIME_LIMIT = env.int('CELERY_TASK_SOFT_TIME_LIMIT_SEC', 40)
 CELERY_WORKER_SEND_TASK_EVENTS = True
 
+# Settings of Beat scheduler
 CELERY_BEAT_SCHEDULE = {
     'run-tick-tack': {
         'task': 'premiers.tasks.tick_tack',
