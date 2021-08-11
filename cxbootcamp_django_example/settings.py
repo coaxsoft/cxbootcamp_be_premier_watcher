@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'premiers',
     'static_content',
     'user_profile',
+    'django_elasticsearch_dsl',
 ]
 
 MIDDLEWARE = [
@@ -304,3 +305,12 @@ FE_SITE_URL = env.str('FE_SITE_URL', '')
 
 # Default version of API. Mainly used in OpenAPI docs by drf_yasg
 DEFAULT_API_VERSION = 'v1'
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
+ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = env.str('ELASTICSEARCH_DSL_SIGNAL_PROCESSOR',
+                                             'django_elasticsearch_dsl.signals.RealTimeSignalProcessor')

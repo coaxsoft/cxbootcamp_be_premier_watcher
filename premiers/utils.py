@@ -1,5 +1,8 @@
 from django.db.models import OuterRef, Subquery, Sum
+from elasticsearch_dsl import Q, SF
+from elasticsearch_dsl.query import MultiMatch
 
+from premiers.documents import ItemDocument
 from premiers.models import Premier, Comment
 
 
@@ -15,3 +18,18 @@ def subquery_example():
         top_comment_id=Subquery(subquery)
     )
     return qs
+
+
+def get_search_query(phrase):
+    query = Q(
+        'function_score',
+        query=MultiMatch(
+            fields=['name', 'description'],
+            query=phrase
+        ),
+    )
+    return ItemDocument.search().query(query)
+
+
+def search(phrase):
+    return get_search_query(phrase).to_queryset()

@@ -18,6 +18,7 @@ psycopg2-binary = "*"
 redis = "*"
 pillow = "*"
 dateutils = "*"
+django-elasticsearch-dsl = "*"
 
 [dev-packages]
 coverage = "*"
