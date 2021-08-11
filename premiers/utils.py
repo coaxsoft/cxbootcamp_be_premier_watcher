@@ -21,15 +21,23 @@ def subquery_example():
 
 
 def get_search_query(phrase):
-    query = Q(
-        'function_score',
-        query=MultiMatch(
-            fields=['name', 'description'],
-            query=phrase
-        ),
-    )
+    query = {
+        "bool": {
+            "must": [
+                {
+                    "multi_match": {
+                        "query": phrase,
+                        "fields": ["name", "description"],
+                        "analyzer": "standard"
+                    }
+                }
+            ],
+        }
+    }
     return ItemDocument.search().query(query)
 
 
 def search(phrase):
-    return get_search_query(phrase).to_queryset()
+    offset = 0
+    limit = 500
+    return get_search_query(phrase)[offset:limit].to_queryset()
